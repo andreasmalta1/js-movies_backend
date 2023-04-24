@@ -1,13 +1,13 @@
-import reviewDAO from "/dao/reviewsDAO.js"
+import reviewsDAO from "../dao/reviewsDAO.js"
 
 export default class ReviewsController {
     static async apiPostReview(req, res, next){
         try{
-            const movieId = req.body.movieId
+            const movieId = parseInt(req.body.movieId)
             const review = req.body.review
             const user = req.body.user
 
-            const reviewResponse = await reviewDAO.addReview(
+            const reviewResponse = await reviewsDAO.addReview(
                 movieId,
                 user,
                 review
@@ -21,11 +21,12 @@ export default class ReviewsController {
     static async apiGetReview(req, res, next){
         try{
             let id = req.params.id || {}
-            let review = await reviewDAO.getReview(id)
+            let review = await reviewsDAO.getReview(id)
             if (!review){
                 res.status(404).json({error: "Not found"})
                 return
             }
+            console.log(review)
             res.json(review)
         } catch(e){
             console.log(`api, ${e}`)
@@ -39,7 +40,7 @@ export default class ReviewsController {
             const review = req.body.review
             const user = req.body.user
 
-            const reviewResponse = await reviewDAO.updateReview(
+            const reviewResponse = await reviewsDAO.updateReview(
                 movieId,
                 user,
                 review
@@ -52,7 +53,7 @@ export default class ReviewsController {
 
             if (review.modifiedCount === 0){
                 throw new Error(
-                    "Unable to update review"
+                    "Unable to update review",
                 )
             }
 
@@ -63,10 +64,10 @@ export default class ReviewsController {
     }
 
 
-    static async apiGetReviews(req, res, next){
+    static async apiDeleteReview(req, res, next){
         try{
             const reveiwId = req.params.id
-            const reviewResponse = await reviewDAO.deleteReview(reveiwId)
+            const reviewResponse = await reviewsDAO.deleteReview(reveiwId)
             res.json({status: "success"})
         } catch(e){
             res.status(500).json({error: e.message})
@@ -77,7 +78,7 @@ export default class ReviewsController {
     static async apiGetReviews(req, res, next){
         try{
             let id = req.params.id || {}
-            let reviews = await reviewDAO.getReviewsByMovieId(id)
+            let reviews = await reviewsDAO.getReviewsByMovieId(id)
             if (!reviews){
                 res.status(404).json({error: "Not found"})
                 return
