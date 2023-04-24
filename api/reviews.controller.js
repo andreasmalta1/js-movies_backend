@@ -66,8 +66,8 @@ export default class ReviewsController {
 
     static async apiDeleteReview(req, res, next){
         try{
-            const reveiwId = req.params.id
-            const reviewResponse = await reviewsDAO.deleteReview(reveiwId)
+            const reviewId = req.params.id
+            const reviewResponse = await reviewsDAO.deleteReview(reviewId)
             res.json({status: "success"})
         } catch(e){
             res.status(500).json({error: e.message})

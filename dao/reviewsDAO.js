@@ -10,7 +10,7 @@ export default class ReviewsDao{
             return
         }
         try{
-            reviews = await conn.db("reviews").collection("reveiws")
+            reviews = await conn.db("reviews").collection("reviews")
         } catch(e){
             console.error(`Unable to establish collection handles in userDAO: ${e}`)
         }
@@ -43,7 +43,7 @@ export default class ReviewsDao{
         try {
             const updateResposne = await reviews.updateOne(
                 { _id: new ObjectID(reviewId) },
-                { $set: { user: user, reveiw: review } }
+                { $set: { user: user, review: review } }
             )
             return updateResposne
         } catch(e){
